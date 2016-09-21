@@ -7,38 +7,43 @@ QUnit.module('themes', {
   before: function () {
     fauxServer.addRoute('themesGet', '/api/sections/Section1/themes', 'GET', function () {
       return require('../stubs/themes.json');
-    });
+    })
+      .addRoute('all_themesGet', '/api/themes/:name', 'GET', function (context, name) {
+        return require('../stubs/all_themes.json');
+      });
   }
 });
 
 QUnit.test('theme1 collection test', function(assert){
 
+  const model = new ThemeModel({name: 'Theme1'});
+  model.idAttribute = 'name';
   const coll = new ThemeCollection('Section1');
+  assert.ok(coll.section === 'Section1');
+  assert.ok(coll.url() !== '');
+
   const done = assert.async();
   coll.fetch({
     success: data => {
       console.dir(data);
+      assert.equal(coll.length, 2);
+      coll.add(model);
+      assert.equal(coll.length, 3);
+      coll.remove(model);
       assert.equal(coll.length, 2);
       done();
     }
   });
 });
 
-QUnit.test('theme2 collection test', function(assert){
-
-  const coll = new ThemeCollection('Section2');
-  const done = assert.async();
-  coll.fetch({
-    success: data => {
-      console.dir(data);
-      assert.ok(coll.length == 2);
-      done();
-    }
-  });
-});
-
 QUnit.test('theme model test', function(assert){
-  const model = new ThemeModel();
+  const model = new ThemeModel({name: 'Theme1'});
+  model.idAttribute = 'name';
+  assert.ok(model.get('name') === 'Theme1');
+  assert.ok(model.urlRoot !== '');
+  assert.ok(model.idAttribute === 'name');
+  assert.ok(model.has('name'));
+
   const done = assert.async();
   model.fetch({
     success: () => {
@@ -54,7 +59,7 @@ QUnit.test('theme view test', function(assert){
   let view = new ThemeList({ collection, el, section: 'Section1' });
   const done = assert.async();
 
-  collection.fetch({success: function () {
+  collection.fetch({success: function (){
     view.render();
     const table = el.querySelector('table');
     console.dir(table);
@@ -71,6 +76,7 @@ QUnit.test('theme view test', function(assert){
 
     let add_th = el.querySelector('.add_theme');
     assert.equal(add_th.innerHTML, 'Добавить тему');
+
     done();
   }});
- });
+});

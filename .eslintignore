@@ -1,1 +1,4 @@
-/client/
+/server/
+*_test.js
+webpack.config*
+Gruntfile.js

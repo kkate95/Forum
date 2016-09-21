@@ -1,0 +1,26 @@
+[
+  {
+    "text": "First message",
+    "date": "2016-09-20 12:32:46",
+    "id": 1,
+    "themeId": "theme1"
+  },
+  {
+    "text": "First message",
+    "date": "2016-09-20 12:32:46",
+    "id": 2,
+    "themeId": "theme2"
+  },
+  {
+    "text": "First message",
+    "date": "2016-09-20 12:32:46",
+    "id": 3,
+    "themeId": "theme3"
+  },
+  {
+    "text": "First message",
+    "date": "2016-09-20 12:32:46",
+    "id": 4,
+    "themeId": "theme4"
+  }
+]

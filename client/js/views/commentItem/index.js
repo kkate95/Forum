@@ -1,6 +1,5 @@
 import {View} from 'backbone';
 import tmpl from './comments.ejs';
-import $ from 'jquery';
 
 export default View.extend({
 
@@ -26,5 +25,4 @@ export default View.extend({
     this.model.idAttribute = 'id';
     this.model.destroy();
   }
-
-})
+});

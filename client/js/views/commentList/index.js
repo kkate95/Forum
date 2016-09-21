@@ -1,12 +1,12 @@
 import $ from 'jquery';
-import Backbone from 'backbone';
-import tmpl from  './comment.ejs';
 import CommentsCollection from '../../collections/comments';
 import CommentsView from '../commentItem/index';
-import striptags from 'striptags';
 import Quill from 'quill';
+import {View} from 'backbone';
+import striptags from 'striptags';
+import tmpl from './comment.ejs';
 
-let CommentList = Backbone.View.extend({
+export default View.extend({
 
   events: {
     'click .back' : 'back',
@@ -16,8 +16,8 @@ let CommentList = Backbone.View.extend({
 
   template: tmpl,
 
-  initialize: function ( options={} ) {
-    const theme =  options.theme || sessionStorage.getItem('theme');
+  initialize: function ( options = {} ) {
+    const theme = options.theme || sessionStorage.getItem('theme');
     this.$el.html(this.template({theme: theme}));
     this.coll = new CommentsCollection(theme);
 
@@ -27,22 +27,21 @@ let CommentList = Backbone.View.extend({
 
     this.coll.fetch();
 
-    var options = {
+    var editor = new Quill('.next', {
       placeholder: 'Введите ваше сообщение...',
       theme: 'snow'
-    };
-    var editor = new Quill('.next', options);
+    });
   },
 
   render: function () {
 
-    $('.all_commentaries').html('');
-    const comment = this.$('.all_commentaries');
+    this.$el.find('.all_commentaries').html('');
+    const comment = this.$el.find('.all_commentaries');
 
-    $('.random1').text(Math.round(Math.random()*1000));
+    this.$el.find('.random1').text(Math.round(Math.random() * 1000));
 
     const models = this.coll.models;
-    for(let i = models.length-1; i >=0; i--){
+    for (let i = models.length - 1; i >= 0; i--){
       const modelView = new CommentsView({
         model: models[i]
       });
@@ -52,7 +51,7 @@ let CommentList = Backbone.View.extend({
     }
 
     if (sessionStorage.getItem('moderator')){
-      $('.delete').show();
+      this.$el.find('.delete').show();
     }
 
     $(window).scroll(() => {
@@ -63,14 +62,13 @@ let CommentList = Backbone.View.extend({
         $('#arrow').fadeOut('normal');
       }
     });
-
   },
 
   add_response: function(){
 
-    let next_message = $('.ql-editor');
-    let current =  new Date().toLocaleString();
-    const theme_name = $('#commentsHead > h2').text();
+    let next_message = this.$el.find('.ql-editor');
+    let current = new Date().toLocaleString();
+    const theme_name = this.$el.find('#commentsHead > h2').text();
     let text = next_message.html();
     text = striptags(text, ['a', 'p', 'br', 'b', 'u', 'em', 'li', 'ol', 'ul', 'h1', 'h2', 'h3']);
     text = $.trim(text);
@@ -80,18 +78,22 @@ let CommentList = Backbone.View.extend({
       return;
     }
 
-    let captcha1 = $('.captcha1').val();
-    captcha1 = $.trim(captcha1);
+    let captcha1 = this.$el.find('.captcha1').val();
+    captcha1 = captcha1.trim();
 
-    if (captcha1 !== $('.random1').text()) {
+    if (captcha1 !== this.$el.find('.random1').text()) {
       alert('Не правильно введено число! Попробуйте ещё раз!');
-      $('.captcha1').val('');
+      this.$el.find('.captcha1').val('');
       return;
     }
 
-    this.coll.create({date: current, text: text, themeId: theme_name});
+    this.coll.create({
+      date: current,
+      text: text,
+      themeId: theme_name
+    });
     next_message.html('');
-    $('.captcha1').val('');
+    this.$el.find('.captcha1').val('');
   },
 
   arrow: function(){
@@ -104,5 +106,3 @@ let CommentList = Backbone.View.extend({
   }
 
 });
-
-export default CommentList;

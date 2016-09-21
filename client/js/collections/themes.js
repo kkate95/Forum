@@ -10,4 +10,4 @@ export default Collection.extend({
   url: function () {
     return BACKEND_URL + '/api/sections/' + this.section + '/themes';
   }
-})
+});

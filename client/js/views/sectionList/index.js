@@ -1,10 +1,9 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import {View} from 'backbone';
 import Modal from '../modalSection/index';
 import SectionsCollection from '../../collections/sections';
 import SectionsView from '../sectionItem/index';
-import tmpl from  './section.ejs';
+import {View} from 'backbone';
+import _ from 'underscore';
+import tmpl from './section.ejs';
 
 export default View.extend({
 
@@ -27,8 +26,8 @@ export default View.extend({
   },
 
   render: function () {
-    $('tbody').html('');                          //!!!!!!!
-    const tbody = this.$('tbody');
+    this.$el.find('tbody').html('');
+    const tbody = this.$el.find('tbody');
     _.each(this.coll.models, function (model) {
 
       const modelView = new SectionsView({
@@ -40,15 +39,15 @@ export default View.extend({
     }, this);
 
     if (sessionStorage.getItem('moderator')){
-      $('.delete_section').show();
+      this.$el.find('.delete_section').show();
     }
   },
 
   navigation: function (e) {
-    const section_name = $(e.target).text();
+    const section_name = this.$el.find(e.target).text();
     sessionStorage.setItem('section', section_name);
 
-     Backbone.history.navigate('themes',  {trigger: true});
+    Backbone.history.navigate('themes', {trigger: true});
   },
 
   addSection: function () {

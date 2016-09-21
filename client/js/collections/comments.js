@@ -8,6 +8,6 @@ export default Collection.extend({
     this.theme = theme;
   },
   url: function () {
-    return BACKEND_URL + '/api/themes/' + this.theme +'/comments';
+    return BACKEND_URL + '/api/themes/' + this.theme + '/comments';
   }
-})
+});

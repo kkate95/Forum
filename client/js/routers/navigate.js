@@ -1,8 +1,8 @@
+import $ from 'jquery';
+import CommentList from '../views/commentList/index';
+import {Router} from 'backbone';
 import SectionList from '../views/sectionList/index';
 import ThemeList from '../views/themeList/index';
-import CommentList from '../views/commentList/index';
-import { Router } from 'backbone';
-import $ from 'jquery';
 
 export default Router.extend({
   routes: {

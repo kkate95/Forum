@@ -1,6 +1,5 @@
 import {View} from 'backbone';
 import tmpl from './sections.ejs';
-import $ from 'jquery';
 
 export default View.extend({
   tagName: 'tr',
@@ -23,5 +22,4 @@ export default View.extend({
     this.model.idAttribute = 'name';
     this.model.destroy();
   }
-
 });

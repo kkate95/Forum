@@ -9,12 +9,12 @@ export default View.extend({
     'click .button_create': 'create'
   },
 
-  initialize: function (options) {
+  initialize: function (options = {}) {
     this.coll = options.coll;
     this.$el.html(tmpl()).
       find('.new_theme, #overlay').
       fadeIn('normal').
-      find('.random2').text(Math.round(Math.random()*1000));
+      find('.random2').text(Math.round(Math.random() * 1000));
   },
 
   close: function () {
@@ -39,6 +39,7 @@ export default View.extend({
       alert('Не правильно введено число! Попробуйте ещё раз!');
       return;
     }
+
     this.coll.create({
       name: theme_name,
       date: moment().format('YYYY MM DD'),

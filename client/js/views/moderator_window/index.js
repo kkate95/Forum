@@ -15,8 +15,8 @@ export default View.extend({
   },
 
   enter: function() {
-    let password = $('.password').val();
-    password = $.trim(password);
+    let password = this.$el.find('.password').val();
+    password = password.trim();
 
     if (password === '1') {
       sessionStorage.setItem('moderator', '1');
